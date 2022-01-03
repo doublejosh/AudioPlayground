@@ -10,8 +10,6 @@
 #include "AudioFileSourceSPIFFS.h"
 #include "AudioFileSourceID3.h"
 #include "AudioGeneratorMP3.h"
-#include "AudioGeneratorTalkie.h"
-#include "AudioFileSourcePROGMEM.h"
 #include "AudioOutputI2SNoDAC.h"
 
 // Set your ESP8266 build to 160MHz
@@ -28,7 +26,6 @@ AudioGeneratorMP3 *mp3;
 AudioFileSourceSPIFFS *file;
 AudioOutputI2SNoDAC *out;
 AudioFileSourceID3 *id3;
-AudioGeneratorTalkie *talkie;
 
 // LiquidCrystal_I2C lcd(0x27,20,4); // set the LCD address to 0x3F for a 16 chars and 2 line display
 
