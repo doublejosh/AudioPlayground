@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #ifdef ESP32
@@ -27,7 +26,7 @@ AudioFileSourceSPIFFS *file;
 AudioOutputI2SNoDAC *out;
 AudioFileSourceID3 *id3;
 
-// LiquidCrystal_I2C lcd(0x27,20,4); // set the LCD address to 0x3F for a 16 chars and 2 line display
+LiquidCrystal_I2C lcd(0x27,20,4); // set the LCD address to 0x3F for a 16 chars and 2 line display
 
 const int TRIGGER_PIN = D6;
 int triggerState = 0;
@@ -73,9 +72,9 @@ void setup()
   Serial.begin(115200);
   Serial.println("SETUP - STARTED");
 
-//  lcd.init();
-//  lcd.begin(20,4);
-//  lcd.backlight();
+  lcd.init();
+  lcd.begin(20,4);
+  lcd.backlight();
 
   audioLogger = &Serial;
   out = new AudioOutputI2SNoDAC();
@@ -91,11 +90,17 @@ void setup()
 void loop()
 {
   if (mp3->isRunning()) {
-    if (!mp3->loop()) mp3->stop();
+    if (!mp3->loop()) {
+      mp3->stop();
+      lcd.clear();
+    }
   } else {
     triggerState = digitalRead(TRIGGER_PIN);
     if (triggerState == HIGH) {
       Serial.println("ON");
+      lcd.clear();
+      lcd.setCursor(1, 0);
+      lcd.print("PLAYING");
       play("/audio-phrases-6.mp3", mp3, id3, out);
     } else {
       Serial.println("OFF");
